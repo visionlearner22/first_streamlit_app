@@ -1,5 +1,6 @@
 import streamlit
 import pandas
+import request
 
 streamlit.title('My Parents New Healthy Diner')
 
@@ -17,3 +18,16 @@ fruits_selected = streamlit.multiselect("Pick some Fruits:", list(my_fruit_list.
 fruits_to_show = my_fruit_list.loc[fruits_selected]
 
 streamlit.dataframe(fruits_to_show)
+
+# New Section to Display FruityVice API response 
+streamlit.header("Fruityvice Fruit Advice!")
+
+fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
+streamlit.write('The user entered ', fruit_choice)
+
+fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" +fruit_choice)
+
+# write your own comment -what does the next line do? 
+fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+# write your own comment - what does this do?
+streamlit.dataframe(fruityvice_normalized)
